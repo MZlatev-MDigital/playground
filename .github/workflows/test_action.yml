@@ -1,0 +1,31 @@
+## A test github action just to try out github annotations
+
+name: Annotations - Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      tenant:
+        description: 'Provide dev tenant id from 201 to 208'
+        default: '201'
+        required: true
+
+env:
+  tenant: "${{ github.event.inputs.tenant }}"
+  namespace: "${{ github.event.inputs.tenant }}-rfq-dev"
+
+jobs:
+  build:
+    runs-on: [ self-hosted, ubuntu-18.04 ]
+    outputs:
+      deploy_tag: ${{ steps.docker_image.outputs.deploy_tag }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Trying out annotations
+        id: try_out_annotations
+        run: |
+          echo "::notice ::Test annotation"
+          echo "::notice ::Tenant- ${{ env.tenant }}"
+          echo "::notice ::Namespace- ${{ env.namespace }}"
+
